@@ -4,19 +4,25 @@ Essa biblioteca foi desenvolvida para o uso do [agendor](https://www.agendor.com
 
 Status: Em desenvolvimento
 
+## Instalando
+
+```
+go get github.com/verbeux-ai/agendor-go
+```
+
 ## Criando o Client
 
 Este é um exemplo de criação de people
 
 ```go
-import myzap "github.com/verbeux-ai/agendor-go"
+import agendor "github.com/verbeux-ai/agendor-go"
 import "context"
 
 client = agendor.NewClient(
-    myzap.WithToken(os.Getenv("TOKEN")),
+    agendor.WithToken(os.Getenv("TOKEN")),
 )
-response, err := client.CreatePeopleDeal(ctx, peopleID, agendor.CreatePeopleDealRequest{
-    Title: "People",
+people, err := client.CreatePeople(ctx, agendor.CreatePeopleRequest{
+    Name: "Teste agendor-go",
 })
 
 if err != nil {
