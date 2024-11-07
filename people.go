@@ -203,3 +203,28 @@ func (s *Client) CreatePeopleDeal(ctx context.Context, peopleID int, peopleDeal 
 
 	return &toReturn.Data, nil
 }
+
+func (s *Client) ListPeopleDeals(ctx context.Context, peopleID int) ([]Deal, error) {
+	resp, err := s.request(ctx, nil, http.MethodGet, fmt.Sprintf(peopleDealsEndpoint, peopleID))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode > 399 {
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		bodyErr := errors.New(string(body))
+		return nil, fmt.Errorf("failed to list people deals with status code %d: %w", resp.StatusCode, bodyErr)
+	}
+
+	var toReturn Response[[]Deal]
+	if err = json.NewDecoder(resp.Body).Decode(&toReturn); err != nil {
+		return nil, err
+	}
+
+	return toReturn.Data, nil
+}
