@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
+	"regexp"
 	"strconv"
 )
 
@@ -46,6 +47,12 @@ func StructToQueryString(data interface{}) (string, error) {
 	}
 
 	return queryParams.Encode(), nil
+}
+
+// RemoveNonNumeric remove todos os caracteres que não sejam números de uma string
+func RemoveNonNumeric(input string) string {
+	re := regexp.MustCompile(`\D`)
+	return re.ReplaceAllString(input, "")
 }
 
 // UnmarshalJSON converte discount de string ou float64 para Float64OrString

@@ -94,6 +94,8 @@ type FilterPeoplesRequest struct {
 }
 
 func (s *Client) ListPeoples(ctx context.Context, filter FilterPeoplesRequest) ([]People, error) {
+	filter.MobilePhone = RemoveNonNumeric(filter.MobilePhone)
+
 	query, err := StructToQueryString(filter)
 	if err != nil {
 		return nil, err
